@@ -20,7 +20,7 @@ Importiere Events direkt über Eventim-Links, speichere sie lokal in iCloud, zei
 ---
 
 ## 📷 Screenshots
-*(folgen noch – bitte in Zukunft ergänzen)*
+
 
 ---
 
