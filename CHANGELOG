@@ -1,0 +1,54 @@
+# Changelog
+Alle nennenswerten Änderungen an diesem Projekt werden in diesem Dokument festgehalten.
+
+Das Format orientiert sich an [Keep a Changelog](https://keepachangelog.com/de/1.0.0/)
+und dieses Projekt nutzt [Semantische Versionierung](https://semver.org/lang/de/).
+
+## [1.3.0] – 2025-09-03
+### Hinzugefügt
+- **Event-Bearbeitung im Script** (`editEvent`): Titel, Ort (Venue/Stadt), Datum, Uhrzeit & Status direkt ändern.
+- **Kalender-Verwaltung**: Auswahl eines schreibbaren Kalenders, Speicherung im Keychain (`preferredCalendar`), erneute Auswahl oder Entfernen möglich.
+- **Kalender-Export** (`exportToCalendar`): Dauerwahl (1–4 h oder ganztägig), korrekte All-Day-Behandlung (00:00–00:00+1).
+- **Einstellungen-Menü** (`showSettingsMenu`): Kalender wählen/ändern, „Alle Events löschen“, „Info & Version“.
+- **Info-Ansicht** (`showInfoTable`): Versionsanzeige (1.3.0), Featureliste, Easteregg (Tap-Counter), Buttons zu GitHub & „Release Notes“.
+- **Teilen-Funktionen**: 
+  - Einzelnes Event teilen (`shareSingleEvent`).
+  - Nur kommende Events gesammelt teilen (`shareEvents`) – formatiert für Messenger.
+- **HTML-Entity-Bereinigung** (`decodeHtmlEntities` + Auto-Clean in `loadEvents`): korrekte Anzeige von Umlauten & Sonderzeichen.
+- **Widget-Verbesserungen** (`createWidget`):
+  - Filter per Widget-Parameter: Status (`ticket`/`interesse`) & Zeitraum (`heute`, `woche`, `monat`, `alle`).
+  - Countdown-Hinweise („heute“, „morgen“, „in x Tagen“).
+  - Dynamische Divider, Icons abhängig von Status/Dringlichkeit.
+  - Mehrere Einträge je nach Widget-Größe.
+
+### Geändert
+- **Parsing von Eventim-Seiten** (`addEvent`): robustere Extraktion von Titel, Venue, Stadt, Datum/Zeit (Fallback via `<meta name="description">`).
+- **Listenansichten** (`showEvents`): Gruppierung nach Monat; klare Sektionen „Kommende“/„Vergangene“, optische Akzente (Headerfarben/Hintergrund).
+- **Sortierung**: konsistent nach Startdatum in allen Flows.
+- **Datum/Zeit-Formatierung**: zentrale Helper (`formatGermanDate`, `formatDateInput`, `formatTimeInput`).
+- **Logging & UX**: präzisere Konsolen-Ausgaben (✅/❌/📂/🧼), verständliche Alerts bei Eingabe-/Netzwerkfehlern.
+
+### Behoben
+- **Doppelte Events**: Duplikatprüfung (gleiches Datum **oder** gleiche URL) verhindert Mehrfacheinträge.
+- **Sonderzeichen-Anzeige**: falsch dargestellte Entities (z. B. `&amp;`, `&quot;`) werden korrekt dekodiert.
+- **Teilen ohne Events**: sauberer Fehlerdialog statt Abbruch.
+- **Kalender-Persistenz**: Probleme mit der gespeicherten Auswahl behoben (Keychain-Handling).
+- **Zeitfenster im Widget**: falsche Filter-/Zeitraumtreffer korrigiert.
+
+### Entfernt
+- N/A – keine Funktionen explizit entfernt.
+
+### Technische Änderungen
+- **Modularisierung**: klare Funktionsblöcke (`showMainMenu`, `showSettingsMenu`, `showEvents`, `showEventMenu`, …).
+- **Datenhaltung**: iCloud-Verzeichnis `EventCalendar/` mit `events.json` und `selectedCalendar.txt`; Auto-Anlage bei Bedarf.
+- **Versions-/Easteregg-Mechanik**: Tap-Counter im Keychain (`eventkalender_version_taps`).
+
+### Migration/Notizen
+- Existierende `events.json` wird beim Laden automatisch bereinigt (HTML-Entities); keine manuelle Migration nötig.
+- Bevorzugter Kalender wird im **Keychain** unter `preferredCalendar` gespeichert. Bei Problemen in den Einstellungen entfernen und neu wählen.
+
+---
+
+## [1.0.0] – Initiale Version (B)
+- Grundlegender Import von Eventdaten (Eventim-Link).
+- Speicherung in `events.json`, einfache Anzeige/Widget-Basis.
